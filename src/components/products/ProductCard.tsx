@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Heart } from 'lucide-react';
+import { ShoppingBag, Heart, Star } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
 import { useFavorites } from '../../hooks/useFavorites';
 import { formatCurrency } from '../../utils/format';
@@ -37,7 +37,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, categ
   
   return (
     <motion.div 
-      className="group relative overflow-hidden rounded-lg bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300"
+      className="group relative overflow-hidden rounded-lg bg-white shadow-lg hover:shadow-xl transition-all duration-300"
       whileHover={{ y: -5 }}
     >
       <Link to={`/shop/${id}`} className="block">
@@ -48,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, categ
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
           />
           
-          <div className="absolute inset-0 bg-black bg-opacity-0 transition-all duration-300 group-hover:bg-opacity-20"></div>
+          <div className="absolute inset-0 bg-black bg-opacity-0 transition-all duration-300 group-hover:bg-opacity-20" />
           
           {/* Quick action buttons */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -68,9 +68,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, categ
                 whileTap={{ scale: 0.9 }}
                 className={`${
                   isProductFavorite 
-                    ? 'bg-primary-300/90 text-white' 
+                    ? 'bg-primary-300 text-white' 
                     : 'bg-white/90 text-dark'
-                } backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white hover:text-dark transition-colors`}
+                } backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-primary-300 hover:text-white transition-colors`}
                 onClick={handleFavoriteClick}
                 aria-label={isProductFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
@@ -95,19 +95,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, categ
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0 }}
-                className="absolute top-3 right-3"
+                className="absolute top-3 right-3 bg-primary-300 rounded-full p-1"
               >
-                <Heart className="w-5 h-5 text-primary-300 fill-current" />
+                <Heart className="w-4 h-4 text-white fill-current" />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
         
         <div className="p-4">
-          <h3 className="font-serif text-lg font-medium text-dark">{name}</h3>
-          <div className="flex items-center justify-between mt-2">
-            <span className="font-medium">{formatCurrency(price)}</span>
-            <div className="text-gold-700">★★★★★</div>
+          <h3 className="font-serif text-lg font-medium text-dark mb-1">{name}</h3>
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-lg">{formatCurrency(price)}</span>
+            <div className="flex text-gold-700">
+              <Star className="w-4 h-4 fill-current" />
+              <Star className="w-4 h-4 fill-current" />
+              <Star className="w-4 h-4 fill-current" />
+              <Star className="w-4 h-4 fill-current" />
+              <Star className="w-4 h-4 fill-current" />
+            </div>
           </div>
         </div>
       </Link>

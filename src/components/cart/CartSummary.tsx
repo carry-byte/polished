@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, CreditCard, Lock } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
 import { formatCurrency } from '../../utils/format';
 import Button from '../common/Button';
@@ -18,7 +18,8 @@ const CartSummary: React.FC = () => {
   const grandTotal = totalPrice + estimatedTax + shipping;
   
   const handleCheckout = () => {
-    alert('Checkout functionality would be implemented here!');
+    // Implement Stripe checkout here
+    alert('Proceeding to secure checkout...');
   };
   
   return (
@@ -65,20 +66,23 @@ const CartSummary: React.FC = () => {
         size="lg" 
         isFullWidth 
         onClick={handleCheckout}
-        icon={<ShoppingBag className="w-5 h-5" />}
+        icon={<Lock className="w-5 h-5" />}
         disabled={cartItems.length === 0}
         className="backdrop-blur-sm bg-gold-400/90 hover:bg-gold-500/90"
       >
-        Proceed to Checkout
+        Secure Checkout
       </Button>
       
-      <div className="mt-6 text-center text-sm text-gray-500">
-        <p>We accept all major payment methods</p>
-        <div className="flex justify-center space-x-2 mt-2">
-          <div className="w-10 h-6 bg-gray-400/30 backdrop-blur-sm rounded"></div>
-          <div className="w-10 h-6 bg-gray-400/30 backdrop-blur-sm rounded"></div>
-          <div className="w-10 h-6 bg-gray-400/30 backdrop-blur-sm rounded"></div>
-          <div className="w-10 h-6 bg-gray-400/30 backdrop-blur-sm rounded"></div>
+      <div className="mt-6">
+        <div className="flex items-center justify-center mb-4">
+          <Lock className="w-4 h-4 text-gray-500 mr-2" />
+          <span className="text-sm text-gray-500">Secure Payment</span>
+        </div>
+        <div className="flex justify-center space-x-3">
+          <img src="https://cdn-icons-png.flaticon.com/128/349/349221.png" alt="Visa" className="h-8" />
+          <img src="https://cdn-icons-png.flaticon.com/128/349/349228.png" alt="Mastercard" className="h-8" />
+          <img src="https://cdn-icons-png.flaticon.com/128/349/349230.png" alt="American Express" className="h-8" />
+          <img src="https://cdn-icons-png.flaticon.com/128/6124/6124998.png" alt="Apple Pay" className="h-8" />
         </div>
       </div>
     </motion.div>
