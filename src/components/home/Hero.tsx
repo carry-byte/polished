@@ -11,7 +11,7 @@ const Hero: React.FC = () => {
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: 'url("https://images.pexels.com/photos/7763818/pexels-photo-7763818.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+          backgroundImage: 'url("https://images.pexels.com/photos/3997374/pexels-photo-3997374.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
           filter: 'brightness(0.7)'
         }}
       >
@@ -40,7 +40,7 @@ const Hero: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
           >
-            Elevate Your <span className="text-gold-400">Nail Game</span> to Art
+            Elevate Your <span className="text-primary-300">Style</span> with Luxury
           </motion.h1>
           
           <motion.p 
@@ -59,11 +59,11 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <Button 
-              variant="gold" 
+              variant="primary" 
               size="lg"
               icon={<ChevronRight className="w-5 h-5" />}
               iconPosition="right"
-              className="backdrop-blur-sm bg-gold-400/90 hover:bg-gold-500/90"
+              className="backdrop-blur-sm bg-primary-300/90 hover:bg-primary-400/90"
             >
               <Link to="/shop">Shop Collection</Link>
             </Button>
@@ -84,7 +84,7 @@ const Hero: React.FC = () => {
               transition={{ duration: 0.6, delay: 1 }}
               className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full flex items-center"
             >
-              <div className="flex text-gold-400">
+              <div className="flex text-primary-300">
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
