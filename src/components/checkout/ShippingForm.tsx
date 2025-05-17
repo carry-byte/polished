@@ -6,7 +6,7 @@ import { useOrder, ShippingAddress } from '../../context/OrderContext';
 
 const ShippingForm: React.FC = () => {
   const { shippingAddress, setShippingAddress, setCheckoutStep } = useOrder();
-  
+
   // Form state
   const [formData, setFormData] = useState<ShippingAddress>({
     fullName: '',
@@ -19,17 +19,17 @@ const ShippingForm: React.FC = () => {
     phone: '',
     email: '',
   });
-  
+
   // Form errors
   const [errors, setErrors] = useState<Partial<Record<keyof ShippingAddress, string>>>({});
-  
+
   // Load saved address if available
   useEffect(() => {
     if (shippingAddress) {
       setFormData(shippingAddress);
     }
   }, [shippingAddress]);
-  
+
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -37,7 +37,7 @@ const ShippingForm: React.FC = () => {
       ...prev,
       [name]: value,
     }));
-    
+
     // Clear error when field is edited
     if (errors[name as keyof ShippingAddress]) {
       setErrors(prev => ({
@@ -46,11 +46,11 @@ const ShippingForm: React.FC = () => {
       }));
     }
   };
-  
+
   // Validate form
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof ShippingAddress, string>> = {};
-    
+
     // Required fields
     if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
     if (!formData.addressLine1.trim()) newErrors.addressLine1 = 'Address is required';
@@ -58,40 +58,55 @@ const ShippingForm: React.FC = () => {
     if (!formData.state.trim()) newErrors.state = 'State/Province is required';
     if (!formData.postalCode.trim()) newErrors.postalCode = 'Postal code is required';
     if (!formData.country.trim()) newErrors.country = 'Country is required';
-    
+
     // Phone validation
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
     } else if (!/^\+?[0-9]{10,15}$/.test(formData.phone.trim())) {
       newErrors.phone = 'Please enter a valid phone number';
     }
-    
+
     // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setShippingAddress(formData);
       setCheckoutStep(2); // Move to payment step
     }
   };
-  
+
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-        <h2 className="font-serif text-2xl mb-6 text-gray-800">Shipping Information</h2>
-        
+      <motion.div
+        className="bg-white rounded-xl shadow-elegant p-6 md:p-8 border-elegant overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+        >
+          <h2 className="font-serif text-2xl mb-2 text-gray-800 flex items-center">
+            <span className="bg-primary-100 text-primary-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 shadow-sm">1</span>
+            Shipping Information
+          </h2>
+          <p className="text-gray-500 mb-6 ml-11">Please enter your shipping details</p>
+        </motion.div>
+
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Full Name */}
@@ -116,7 +131,7 @@ const ShippingForm: React.FC = () => {
                 <p className="mt-1 text-red-500 text-sm">{errors.fullName}</p>
               )}
             </div>
-            
+
             {/* Address Line 1 */}
             <div className="col-span-2">
               <label className="block text-gray-700 mb-2 font-medium">Address Line 1</label>
@@ -139,7 +154,7 @@ const ShippingForm: React.FC = () => {
                 <p className="mt-1 text-red-500 text-sm">{errors.addressLine1}</p>
               )}
             </div>
-            
+
             {/* Address Line 2 */}
             <div className="col-span-2">
               <label className="block text-gray-700 mb-2 font-medium">Address Line 2 (Optional)</label>
@@ -152,7 +167,7 @@ const ShippingForm: React.FC = () => {
                 placeholder="Apartment, suite, unit, etc."
               />
             </div>
-            
+
             {/* City */}
             <div>
               <label className="block text-gray-700 mb-2 font-medium">City</label>
@@ -170,7 +185,7 @@ const ShippingForm: React.FC = () => {
                 <p className="mt-1 text-red-500 text-sm">{errors.city}</p>
               )}
             </div>
-            
+
             {/* State/Province */}
             <div>
               <label className="block text-gray-700 mb-2 font-medium">State/Province</label>
@@ -188,7 +203,7 @@ const ShippingForm: React.FC = () => {
                 <p className="mt-1 text-red-500 text-sm">{errors.state}</p>
               )}
             </div>
-            
+
             {/* Postal Code */}
             <div>
               <label className="block text-gray-700 mb-2 font-medium">Postal Code</label>
@@ -206,7 +221,7 @@ const ShippingForm: React.FC = () => {
                 <p className="mt-1 text-red-500 text-sm">{errors.postalCode}</p>
               )}
             </div>
-            
+
             {/* Country */}
             <div>
               <label className="block text-gray-700 mb-2 font-medium">Country</label>
@@ -228,7 +243,7 @@ const ShippingForm: React.FC = () => {
                 <p className="mt-1 text-red-500 text-sm">{errors.country}</p>
               )}
             </div>
-            
+
             {/* Phone */}
             <div>
               <label className="block text-gray-700 mb-2 font-medium">Phone Number</label>
@@ -251,7 +266,7 @@ const ShippingForm: React.FC = () => {
                 <p className="mt-1 text-red-500 text-sm">{errors.phone}</p>
               )}
             </div>
-            
+
             {/* Email */}
             <div>
               <label className="block text-gray-700 mb-2 font-medium">Email Address</label>
@@ -275,18 +290,24 @@ const ShippingForm: React.FC = () => {
               )}
             </div>
           </div>
-          
-          <div className="mt-8 flex justify-end">
+
+          <motion.div
+            className="mt-8 flex justify-end"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
+          >
             <Button
               type="submit"
               variant="primary"
               size="lg"
+              className="shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
             >
               Continue to Payment
             </Button>
-          </div>
+          </motion.div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };

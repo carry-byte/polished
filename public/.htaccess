@@ -1,0 +1,26 @@
+# Set proper MIME types for JavaScript modules
+<IfModule mod_mime.c>
+  AddType text/javascript js
+  AddType text/javascript mjs
+  AddType text/javascript jsx
+  AddType text/javascript ts
+  AddType text/javascript tsx
+</IfModule>
+
+# Enable CORS
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|mjs|jsx|ts|tsx)$">
+    Header set Content-Type "text/javascript"
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
+
+# Handle SPA routing
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

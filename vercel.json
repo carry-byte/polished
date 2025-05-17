@@ -1,0 +1,24 @@
+{
+  "routes": [
+    {
+      "src": "/(.*)\\.js$",
+      "headers": { "Content-Type": "text/javascript" },
+      "continue": true
+    },
+    {
+      "src": "/(.*)\\.mjs$",
+      "headers": { "Content-Type": "text/javascript" },
+      "continue": true
+    },
+    {
+      "src": "/(.*)\\.tsx?$",
+      "headers": { "Content-Type": "text/javascript" },
+      "continue": true
+    },
+    {
+      "src": "/(.*)\\.jsx?$",
+      "headers": { "Content-Type": "text/javascript" },
+      "continue": true
+    }
+  ]
+}

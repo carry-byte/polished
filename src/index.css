@@ -15,6 +15,27 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif font-medium;
   }
+
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl leading-tight tracking-tight;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl leading-tight tracking-tight;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl leading-snug tracking-tight;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* Elegant transitions for all interactive elements */
+  a, button, input, select, textarea {
+    @apply transition-all duration-300 ease-in-out;
+  }
 }
 
 @layer components {
@@ -87,6 +108,7 @@
     background-size: 200% 100%;
   }
 
+  /* Animation utilities */
   .animate-fade-in-up {
     animation: fadeInUp 0.3s ease-out forwards;
   }
@@ -95,6 +117,54 @@
     animation: fadeOut 0.3s ease-out forwards;
   }
 
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.5s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  .animate-bounce-in {
+    animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  .animate-pulse-soft {
+    animation: pulseSoft 2s infinite;
+  }
+
+  /* Glass morphism */
+  .glass-morphism {
+    @apply bg-white/70 backdrop-blur-md;
+  }
+
+  /* Elegant shadows */
+  .shadow-elegant {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-elegant-hover {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .shadow-elegant-hover:hover {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Border styles */
+  .border-elegant {
+    @apply border border-gray-200/80;
+  }
+
+  /* Animation keyframes */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -112,6 +182,77 @@
     }
     to {
       opacity: 0;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes pulseSoft {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
     }
   }
 }

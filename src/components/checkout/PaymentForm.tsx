@@ -6,7 +6,7 @@ import { useOrder, PaymentMethod, CreditCardInfo } from '../../context/OrderCont
 
 const PaymentForm: React.FC = () => {
   const { paymentMethod, creditCardInfo, setPaymentMethod, setCreditCardInfo, setCheckoutStep } = useOrder();
-  
+
   // Form state
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>(paymentMethod || 'credit_card');
   const [cardData, setCardData] = useState<CreditCardInfo>({
@@ -15,39 +15,39 @@ const PaymentForm: React.FC = () => {
     expiryDate: '',
     cvv: '',
   });
-  
+
   // Form errors
   const [errors, setErrors] = useState<Partial<Record<keyof CreditCardInfo, string>>>({});
-  
+
   // Load saved card info if available
   useEffect(() => {
     if (creditCardInfo) {
       setCardData(creditCardInfo);
     }
   }, [creditCardInfo]);
-  
+
   // Handle payment method change
   const handlePaymentMethodChange = (method: PaymentMethod) => {
     setSelectedPaymentMethod(method);
   };
-  
+
   // Handle card input change
   const handleCardInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
+
     // Format card number with spaces
     if (name === 'cardNumber') {
       const formattedValue = value
         .replace(/\s/g, '') // Remove existing spaces
         .replace(/\D/g, '') // Remove non-digits
         .slice(0, 16); // Limit to 16 digits
-      
+
       // Add spaces after every 4 digits
       const parts = [];
       for (let i = 0; i < formattedValue.length; i += 4) {
         parts.push(formattedValue.slice(i, i + 4));
       }
-      
+
       setCardData(prev => ({
         ...prev,
         [name]: parts.join(' '),
@@ -58,7 +58,7 @@ const PaymentForm: React.FC = () => {
       const formattedValue = value
         .replace(/\D/g, '') // Remove non-digits
         .slice(0, 4); // Limit to 4 digits
-      
+
       if (formattedValue.length > 2) {
         setCardData(prev => ({
           ...prev,
@@ -85,7 +85,7 @@ const PaymentForm: React.FC = () => {
         [name]: value,
       }));
     }
-    
+
     // Clear error when field is edited
     if (errors[name as keyof CreditCardInfo]) {
       setErrors(prev => ({
@@ -94,11 +94,11 @@ const PaymentForm: React.FC = () => {
       }));
     }
   };
-  
+
   // Validate credit card form
   const validateCreditCardForm = (): boolean => {
     const newErrors: Partial<Record<keyof CreditCardInfo, string>> = {};
-    
+
     // Only validate if credit card is selected
     if (selectedPaymentMethod === 'credit_card') {
       // Card number validation
@@ -107,12 +107,12 @@ const PaymentForm: React.FC = () => {
       } else if (cardData.cardNumber.replace(/\s/g, '').length < 16) {
         newErrors.cardNumber = 'Please enter a valid 16-digit card number';
       }
-      
+
       // Cardholder name validation
       if (!cardData.cardholderName.trim()) {
         newErrors.cardholderName = 'Cardholder name is required';
       }
-      
+
       // Expiry date validation
       if (!cardData.expiryDate.trim()) {
         newErrors.expiryDate = 'Expiry date is required';
@@ -124,12 +124,12 @@ const PaymentForm: React.FC = () => {
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
         const currentMonth = currentDate.getMonth() + 1; // 1-12
-        
+
         if (year < currentYear || (year === currentYear && month < currentMonth)) {
           newErrors.expiryDate = 'Card has expired';
         }
       }
-      
+
       // CVV validation
       if (!cardData.cvv.trim()) {
         newErrors.cvv = 'CVV is required';
@@ -137,99 +137,142 @@ const PaymentForm: React.FC = () => {
         newErrors.cvv = 'Please enter a valid CVV';
       }
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate form if credit card is selected
     if (selectedPaymentMethod === 'credit_card' && !validateCreditCardForm()) {
       return;
     }
-    
+
     // Save payment method
     setPaymentMethod(selectedPaymentMethod);
-    
+
     // Save credit card info if credit card is selected
     if (selectedPaymentMethod === 'credit_card') {
       setCreditCardInfo(cardData);
     }
-    
+
     // Move to review step
     setCheckoutStep(3);
   };
-  
+
   // Handle back button
   const handleBack = () => {
     setCheckoutStep(1);
   };
-  
+
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-        <h2 className="font-serif text-2xl mb-6 text-gray-800">Payment Method</h2>
-        
+      <motion.div
+        className="bg-white rounded-xl shadow-elegant p-6 md:p-8 border-elegant overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+        >
+          <h2 className="font-serif text-2xl mb-2 text-gray-800 flex items-center">
+            <span className="bg-primary-100 text-primary-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 shadow-sm">2</span>
+            Payment Method
+          </h2>
+          <p className="text-gray-500 mb-6 ml-11">Select your preferred payment method</p>
+        </motion.div>
+
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
             {/* Payment Method Selection */}
             <div>
               <label className="block text-gray-700 mb-4 font-medium">Select Payment Method</label>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Credit Card Option */}
-                <div
-                  className={`border rounded-lg p-4 cursor-pointer transition-all duration-300 ${
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`border-2 rounded-xl p-5 cursor-pointer transition-all duration-300 shadow-elegant-hover ${
                     selectedPaymentMethod === 'credit_card'
-                      ? 'border-primary-300 bg-primary-50'
+                      ? 'border-primary-400 bg-primary-50 shadow-md'
                       : 'border-gray-200 hover:border-primary-200'
                   }`}
                   onClick={() => handlePaymentMethodChange('credit_card')}
                 >
                   <div className="flex items-center">
-                    <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${
-                      selectedPaymentMethod === 'credit_card' ? 'border-primary-300' : 'border-gray-300'
+                    <div className={`w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                      selectedPaymentMethod === 'credit_card' ? 'border-primary-400 scale-110' : 'border-gray-300'
                     }`}>
                       {selectedPaymentMethod === 'credit_card' && (
-                        <div className="w-3 h-3 rounded-full bg-primary-300"></div>
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="w-3 h-3 rounded-full bg-primary-400"
+                        ></motion.div>
                       )}
                     </div>
-                    <div className="flex items-center">
-                      <CreditCard className="w-5 h-5 text-gray-600 mr-2" />
-                      <span className="font-medium">Credit Card</span>
+                    <div className="flex flex-col">
+                      <div className="flex items-center">
+                        <CreditCard className={`w-5 h-5 mr-2 ${
+                          selectedPaymentMethod === 'credit_card' ? 'text-primary-500' : 'text-gray-600'
+                        }`} />
+                        <span className="font-medium text-lg">Credit Card</span>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-1 ml-7">Pay securely with your credit card</p>
                     </div>
                   </div>
-                </div>
-                
+                </motion.div>
+
                 {/* Cash on Delivery Option */}
-                <div
-                  className={`border rounded-lg p-4 cursor-pointer transition-all duration-300 ${
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.4 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`border-2 rounded-xl p-5 cursor-pointer transition-all duration-300 shadow-elegant-hover ${
                     selectedPaymentMethod === 'cash_on_delivery'
-                      ? 'border-primary-300 bg-primary-50'
+                      ? 'border-primary-400 bg-primary-50 shadow-md'
                       : 'border-gray-200 hover:border-primary-200'
                   }`}
                   onClick={() => handlePaymentMethodChange('cash_on_delivery')}
                 >
                   <div className="flex items-center">
-                    <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center ${
-                      selectedPaymentMethod === 'cash_on_delivery' ? 'border-primary-300' : 'border-gray-300'
+                    <div className={`w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                      selectedPaymentMethod === 'cash_on_delivery' ? 'border-primary-400 scale-110' : 'border-gray-300'
                     }`}>
                       {selectedPaymentMethod === 'cash_on_delivery' && (
-                        <div className="w-3 h-3 rounded-full bg-primary-300"></div>
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="w-3 h-3 rounded-full bg-primary-400"
+                        ></motion.div>
                       )}
                     </div>
-                    <div className="flex items-center">
-                      <Truck className="w-5 h-5 text-gray-600 mr-2" />
-                      <span className="font-medium">Cash on Delivery</span>
+                    <div className="flex flex-col">
+                      <div className="flex items-center">
+                        <Truck className={`w-5 h-5 mr-2 ${
+                          selectedPaymentMethod === 'cash_on_delivery' ? 'text-primary-500' : 'text-gray-600'
+                        }`} />
+                        <span className="font-medium text-lg">Cash on Delivery</span>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-1 ml-7">Pay when you receive your order</p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
-            
+
             {/* Credit Card Form */}
             {selectedPaymentMethod === 'credit_card' && (
               <motion.div
@@ -240,7 +283,7 @@ const PaymentForm: React.FC = () => {
                 className="mt-6 border-t border-gray-200 pt-6"
               >
                 <h3 className="font-serif text-xl mb-4 text-gray-800">Card Details</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Card Number */}
                   <div className="col-span-2">
@@ -264,7 +307,7 @@ const PaymentForm: React.FC = () => {
                       <p className="mt-1 text-red-500 text-sm">{errors.cardNumber}</p>
                     )}
                   </div>
-                  
+
                   {/* Cardholder Name */}
                   <div className="col-span-2">
                     <label className="block text-gray-700 mb-2 font-medium">Cardholder Name</label>
@@ -287,7 +330,7 @@ const PaymentForm: React.FC = () => {
                       <p className="mt-1 text-red-500 text-sm">{errors.cardholderName}</p>
                     )}
                   </div>
-                  
+
                   {/* Expiry Date */}
                   <div>
                     <label className="block text-gray-700 mb-2 font-medium">Expiry Date</label>
@@ -310,7 +353,7 @@ const PaymentForm: React.FC = () => {
                       <p className="mt-1 text-red-500 text-sm">{errors.expiryDate}</p>
                     )}
                   </div>
-                  
+
                   {/* CVV */}
                   <div>
                     <label className="block text-gray-700 mb-2 font-medium">CVV</label>
@@ -334,7 +377,7 @@ const PaymentForm: React.FC = () => {
                     )}
                   </div>
                 </div>
-                
+
                 <div className="mt-4 p-4 bg-gray-50 rounded-md">
                   <div className="flex items-center">
                     <Lock className="w-4 h-4 text-gray-500 mr-2" />
@@ -343,7 +386,7 @@ const PaymentForm: React.FC = () => {
                 </div>
               </motion.div>
             )}
-            
+
             {/* Cash on Delivery Info */}
             {selectedPaymentMethod === 'cash_on_delivery' && (
               <motion.div
@@ -365,27 +408,44 @@ const PaymentForm: React.FC = () => {
               </motion.div>
             )}
           </div>
-          
-          <div className="mt-8 flex justify-between">
+
+          <motion.div
+            className="mt-8 flex justify-between"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.4 }}
+          >
             <Button
               type="button"
               variant="outline"
               size="lg"
               onClick={handleBack}
+              className="border-2 hover:bg-gray-50 transition-all duration-300"
             >
-              Back to Shipping
+              <span className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                </svg>
+                Back to Shipping
+              </span>
             </Button>
-            
+
             <Button
               type="submit"
               variant="primary"
               size="lg"
+              className="shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
             >
-              Continue to Review
+              <span className="flex items-center">
+                Continue to Review
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </span>
             </Button>
-          </div>
+          </motion.div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };

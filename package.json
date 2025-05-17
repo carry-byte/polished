@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.js"
   },
   "dependencies": {
     "@react-three/drei": "^9.97.0",
     "@react-three/fiber": "^8.15.19",
+    "express": "^5.1.0",
     "framer-motion": "^11.0.6",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
