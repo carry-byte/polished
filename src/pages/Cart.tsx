@@ -9,33 +9,39 @@ import { useCart } from '../hooks/useCart';
 
 const Cart: React.FC = () => {
   const { cartItems, clearCart } = useCart();
-  
+
+  // Add console log for debugging
+  console.log('Cart rendering with items:', cartItems);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container-custom py-12 mt-16">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex justify-between items-center mb-8">
+        {/* Removed motion.div animation to fix rendering issues */}
+        <div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
-              <h1 className="font-serif text-3xl md:text-4xl mb-2">Shopping Cart</h1>
-              <Link to="/shop" className="inline-flex items-center text-gray-600 hover:text-primary-500 transition-colors">
-                <ArrowLeft className="w-4 h-4 mr-1" /> Continue Shopping
+              <h1 className="font-serif text-3xl md:text-4xl mb-3 text-gray-800">Shopping Cart</h1>
+              <Link
+                to="/shop"
+                className="inline-flex items-center text-gray-600 hover:text-primary-500 transition-colors group"
+              >
+                <span className="relative overflow-hidden inline-block mr-2 w-5 h-5">
+                  <ArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" />
+                </span>
+                <span className="font-medium">Continue Shopping</span>
               </Link>
             </div>
-            
+
             {cartItems.length > 0 && (
-              <button 
+              <button
                 onClick={clearCart}
-                className="text-sm text-gray-500 hover:text-primary-500 transition-colors"
+                className="text-sm font-medium px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 hover:text-primary-500 transition-all duration-300 flex items-center"
               >
-                Clear Cart
+                <span>Clear Cart</span>
               </button>
             )}
           </div>
-          
+
           {cartItems.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="md:col-span-2">
@@ -43,7 +49,7 @@ const Cart: React.FC = () => {
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="font-serif text-xl">Cart Items ({cartItems.length})</h2>
                   </div>
-                  
+
                   <div className="space-y-4">
                     {cartItems.map(item => (
                       <CartItem
@@ -58,7 +64,7 @@ const Cart: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="md:col-span-1">
                 <CartSummary />
               </div>
@@ -77,7 +83,7 @@ const Cart: React.FC = () => {
               </Button>
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
