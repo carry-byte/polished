@@ -33,7 +33,7 @@ const CartItem: React.FC<CartItemProps> = ({ id, name, price, image, quantity })
   
   return (
     <motion.div 
-      className="flex items-center py-4 border-b border-gray-200 bg-white/60 backdrop-blur-sm rounded-lg mb-4 px-4"
+      className="flex items-center py-4 border-b border-gray-200 bg-white rounded-lg mb-4 px-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -20 }}

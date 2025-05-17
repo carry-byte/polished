@@ -24,7 +24,7 @@ const CartSummary: React.FC = () => {
   
   return (
     <motion.div 
-      className="bg-white/80 backdrop-blur-md rounded-lg shadow-soft p-6"
+      className="bg-white rounded-lg shadow-lg p-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.2 }}
@@ -62,13 +62,12 @@ const CartSummary: React.FC = () => {
       </div>
       
       <Button 
-        variant="gold" 
+        variant="primary" 
         size="lg" 
         isFullWidth 
         onClick={handleCheckout}
         icon={<Lock className="w-5 h-5" />}
         disabled={cartItems.length === 0}
-        className="backdrop-blur-sm bg-gold-400/90 hover:bg-gold-500/90"
       >
         Secure Checkout
       </Button>
